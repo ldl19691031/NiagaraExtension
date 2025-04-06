@@ -19,9 +19,18 @@ public:
 	virtual void GetRendererTooltipWidgets(const FNiagaraEmitterInstance* InEmitter, TArray<TSharedPtr<SWidget>>& OutWidgets, TSharedPtr<FAssetThumbnailPool> InThumbnailPool) const override { return; }
 
 	virtual bool IsSimTargetSupported(ENiagaraSimTarget InSimTarget) const { return InSimTarget == ENiagaraSimTarget::CPUSim; };
+	virtual void PostInitProperties() override;
 	//~ UNiagaraRendererProperties interface
 
 	virtual bool NeedsSystemPostTick() const override { return true; }
 	virtual bool NeedsSystemCompletion() const override { return true; }
+public:
+	UPROPERTY(EditAnywhere, Category = "Bindings")
+	FNiagaraVariableAttributeBinding MeshVertexPositionBinding;
+
+protected:
+	void InitBindings();
+
+	static TArray<TWeakObjectPtr<UNiagaraSimpleCustomRendererProperties> > DeferredInitProperties;
 };
 
