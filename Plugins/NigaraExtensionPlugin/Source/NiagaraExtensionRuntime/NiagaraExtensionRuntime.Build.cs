@@ -41,6 +41,7 @@ public class NiagaraExtensionRuntime : ModuleRules
 				// ... add private dependencies that you statically link with here ...	
 				"Niagara",
                 "NiagaraCore",
+                "ProceduralMeshComponent",
             }
 			);
 		
