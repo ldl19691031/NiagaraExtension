@@ -39,7 +39,9 @@ public class NiagaraExtensionEditor : ModuleRules
 				"Slate",
 				"SlateCore",
 				// ... add private dependencies that you statically link with here ...	
-			}
+				"NiagaraExtensionRuntime",
+                "NiagaraEditor",
+            }
 			);
 		
 		
