@@ -55,6 +55,13 @@ FNiagaraRenderer* UNiagaraSimpleCustomRendererProperties::CreateEmitterRenderer(
 	return NewRenderer;
 }
 
+void UNiagaraSimpleCustomRendererProperties::GetUsedMaterials(const FNiagaraEmitterInstance* InEmitter, TArray<UMaterialInterface*>& OutMaterials) const { 
+	if (Material)
+	{
+		OutMaterials.Add(Material);
+	}
+}
+
 void UNiagaraSimpleCustomRendererProperties::PostInitProperties()
 {
 	Super::PostInitProperties();
@@ -130,6 +137,8 @@ void FNiagaraSimpleCustomRenderer::PostSystemTick_GameThread(const UNiagaraRende
 			SpawnedComponentOwnerActor->SetFlags(RF_Transient);
 		}
 	}
+	const UNiagaraSimpleCustomRendererProperties* Props = CastChecked<UNiagaraSimpleCustomRendererProperties>(InProperties);
+
 	if (MeshComponent.IsValid() == false)
 	{
 		CreateAndInitMeshComponent();
@@ -137,7 +146,15 @@ void FNiagaraSimpleCustomRenderer::PostSystemTick_GameThread(const UNiagaraRende
 
 	if (MeshComponent.IsValid())
 	{
-		const UNiagaraSimpleCustomRendererProperties* Props = CastChecked<UNiagaraSimpleCustomRendererProperties>(InProperties);
+		if (Props->Material)
+		{
+			MeshComponent->SetMaterial(0, Props->Material);
+		}
+	}
+
+	if (MeshComponent.IsValid())
+	{
+		
 		const FNiagaraDataSet& Data = Emitter->GetParticleData();
 		const FNiagaraDataBuffer& ParticleData = Data.GetCurrentDataChecked();
 		FNiagaraDataSetAccessor<FNiagaraPosition> MeshVertexPositionAccessor(Data, Props->MeshVertexPositionBinding.GetDataSetBindableVariable().GetName());
